@@ -1,38 +1,25 @@
 #include <stdlib.h>
 #include <stdio.h>
+
+#include "Handlers.h"
+#include "Utilities.h"
+
 #pragma warning(disable:4996)
 
-//function to repeat prompt until valid mode is selected
-void modeSelectionHandler(int* operationModePtr) {
-	while (*operationModePtr == 0) {
-		printf("> ");
-		rewind(stdin);
-		if (scanf("%d", operationModePtr) == NULL) continue;
-
-		switch (*operationModePtr) {
-		case 1:
-			printf("Administrator mode selected.\n");
-			return;
-
-		case 2:
-			printf("Student mode selected.\n");
-			return;
-
-		default:
-			*operationModePtr = 0;
-		}
-
-	}
-}
-
 void main(void) {
-	// int operationMode = 0 (repeat prompt) || 1 (admin) || 2 (student)
+	//int operationMode = 0 (initial operation condition) || 1 (admin) || 2 (student)
 	int operationMode = 0;
 	
+	//print screen header
 	printf("Kolej Pasar\n");
 	printf("==================================================\n");
-	printf("Type to select access mode\n1\t-\tadministrator mode\n2\t-\tstudent mode\n\n\n");
+
+	//prompt for access mode
+	printf("Type to select access mode\n1\t-\tadministrator mode\n2\t-\tstudent mode\n\n");
 	modeSelectionHandler(&operationMode);
+
+	//run relevant function based on operationMode
+	//(operationMode == 1) ? /*admin mode function*/ : /*student mode function*/;
 
 	system("pause");
 }
