@@ -5,8 +5,19 @@
 
 #pragma warning(disable:4996)
 
-void modeSelectionHandler(int* operationModePtr) {
-	while (*operationModePtr == 0) {
+void selectionHandler(int* operationModePtr, char** choicesArray, int choicesArraySize) {
+	/*printf("Type to select access mode\n"
+		"1\t-\tAdministrator mode\n"
+		"2\t-\tStudent mode\n\n");*/
+
+	//print choices 
+	printf("Type to select\n");
+	for (int i = 0; i < choicesArraySize; i++) {
+		printf("%d\t-\t%s\n", i + 1, choicesArray[i]);
+	}
+	printf("\n");
+
+	do {
 		printf("> ");
 
 		//return value check
@@ -15,17 +26,11 @@ void modeSelectionHandler(int* operationModePtr) {
 
 		//check for selected operation mode and update operationMode variable in main()
 		//if input is invalid, repeat prompt
-		switch (*operationModePtr) {
-		case 1:
-			printf("Administrator mode selected.\n\n");
-			return;
-
-		case 2:
-			printf("Student mode selected.\n\n");
-			return;
-
-		default:
+		if (choicesArray[*operationModePtr - 1]) {
+			printf("%s selected.\n\n\n", choicesArray[*operationModePtr - 1]);
+		}
+		else {
 			*operationModePtr = 0;
 		}
-	}
+	} while (*operationModePtr == 0);
 }

@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Admin.c" />
     <ClCompile Include="App.c" />
     <ClCompile Include="Handlers.c" />
     <ClCompile Include="Utilities.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Admin.h" />
     <ClInclude Include="Handlers.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>

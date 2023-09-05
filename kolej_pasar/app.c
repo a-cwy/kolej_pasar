@@ -3,23 +3,34 @@
 
 #include "Handlers.h"
 #include "Utilities.h"
+#include "Admin.h"
 
 #pragma warning(disable:4996)
 
+const char* operationModesArray[2] = { "Administrator mode", "Student mode"};
+
 void main(void) {
-	//int operationMode = 0 (initial operation condition) || 1 (admin) || 2 (student)
+	//int operationMode = 1 (admin) || 2 (student)
 	int operationMode = 0;
 	
 	//print screen header
-	printf("Kolej Pasar\n");
-	printf("==================================================\n");
+	printMenuHeader();
 
 	//prompt for access mode
-	printf("Type to select access mode\n1\t-\tadministrator mode\n2\t-\tstudent mode\n\n");
-	modeSelectionHandler(&operationMode);
+	selectionHandler(&operationMode, operationModesArray, 2);
 
 	//run relevant function based on operationMode
-	//(operationMode == 1) ? /*admin mode function*/ : /*student mode function*/;
+	switch (operationMode) {
+	//admin mode	
+	case 1:
+		adminMode(&operationMode);
+		break;
+	case 2:
+		break;
+	default:
+		printf("Unexpected invalid operation mode, please restart program.");
+		break;
+	}
 
 	system("pause");
 }
