@@ -22,7 +22,7 @@ void flushTerminal(void) {
 
 //Accepts input as char letterGrade[3] and returns corresponding grade point value.
 float getGradePoint(char *letterGrade) {
-	char conversionArrayKeys[8][3] = {"A", "A-", "B+", "B", "B-", "C+", "C", "F"};
+	char conversionArrayKeys[8][3] = {"A\n", "A-", "B+", "B\n", "B-", "C+", "C\n", "F\n"};
 	float conversionArrayValues[8] = {4.00f, 3.75f, 3.50f, 3.00f, 2.75f, 2.50f, 2.00f, 0.00f};
 
 
@@ -34,6 +34,53 @@ float getGradePoint(char *letterGrade) {
 
 	//return arbitary impossible value if all checks fail
 	return -1.0f;
+}
+
+void calcQualityPoint(struct Student *studentPtr) {
+	for (int semester = 0; semester < 3; semester++) {
+		for (int course = 0; course < 2; course++) {
+			int creditHour = studentPtr->semesters[semester].courses[course].creditHour;
+			float gradePoint = getGradePoint(&studentPtr->semesters[semester].courses[course].letterGrade);
+
+			studentPtr->semesters[semester].courses[course].qualityPoint = (float)creditHour * gradePoint;
+		}
+	}
+
+	return;
+}
+
+void calcGPA(struct Student* studentPtr) {
+	for (int semester = 0; semester < 3; semester++) {
+		int totalCreditHour = 0;
+		float totalQualityPoint = 0.0f;
+
+		for (int course = 0; course < 2; course++) {
+			totalCreditHour += studentPtr->semesters[semester].courses[course].creditHour;
+			totalQualityPoint += studentPtr->semesters[semester].courses[course].qualityPoint;
+			
+		}
+
+		studentPtr->semesters[semester].GPA = (float)totalQualityPoint / totalCreditHour ;
+	}
+
+	return;
+}
+
+void calcCGPA(struct Student* studentPtr) {
+		int totalCreditHour = 0;
+		float totalQualityPoint = 0.0f;
+	for (int semester = 0; semester < 3; semester++) {
+
+		for (int course = 0; course < 2; course++) {
+			totalCreditHour += studentPtr->semesters[semester].courses[course].creditHour;
+			totalQualityPoint += studentPtr->semesters[semester].courses[course].qualityPoint;
+
+		}
+
+	}
+		studentPtr->CGPA = (float)totalQualityPoint / totalCreditHour;
+
+	return;
 }
 
 //Initialize _DefaultStudent with static information

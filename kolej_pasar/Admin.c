@@ -28,6 +28,9 @@ void adminMode(int* operationModePtr) {
 	switch (selectedMode) {
 	case 1:
 		student1 = addStudent();
+		calcQualityPoint(&student1);
+		calcGPA(&student1);
+		calcCGPA(&student1);
 		break;
 	case 2:
 		break;
@@ -40,9 +43,6 @@ void adminMode(int* operationModePtr) {
 	default:
 		break;
 	}
-
-	printf("\n\n%s\n", student1.id);
-	printf("%s\n", student1.name);
 }
 
 //Creates a new struct Student and returns it with initialized data based on user input
@@ -67,6 +67,10 @@ struct Student addStudent(void) {
 			printf("Course code (AAA1000) \t> ");
 			rewind(stdin);
 			gets(tempStudent.semesters[semester].courses[course].courseCode);
+
+			printf("Credit Hour \t\t> ");
+			rewind(stdin);
+			scanf("%d", &tempStudent.semesters[semester].courses[course].creditHour);
 
 			
 			//loop to re-prompt for valid letterGrade value
