@@ -15,8 +15,7 @@ struct Course {
 //Structure for Semester
 struct Semester {
 	float GPA;
-	struct Course course1;
-	struct Course course2;
+	struct Course courses[2];
 };
 
 //Structure for Student
@@ -24,7 +23,5 @@ struct Student {
 	char name[51];
 	char id[10]; //FORMAT SPECIFIED AS ABCD12345
 	float CGPA;
-	struct Semester semester1;
-	struct Semester semester2;
-	struct Semester semester3;
+	struct Semester semesters[3];
 };

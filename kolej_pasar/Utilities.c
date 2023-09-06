@@ -21,7 +21,7 @@ void flushTerminal(void) {
 }
 
 //Accepts input as char letterGrade[3] and returns corresponding grade point value.
-float getGradePoint(char* letterGrade[3]) {
+float getGradePoint(char *letterGrade) {
 	char conversionArrayKeys[8][3] = {"A", "A-", "B+", "B", "B-", "C+", "C", "F"};
 	float conversionArrayValues[8] = {4.00f, 3.75f, 3.50f, 3.00f, 2.75f, 2.50f, 2.00f, 0.00f};
 
@@ -29,11 +29,11 @@ float getGradePoint(char* letterGrade[3]) {
 	//iterate through conversionArrayKeys to find index of letterGrade by matching value
 	for (int i = 0; i < 8; i++) {
 		//return conversionArrayValues[i] if letterGrade and conversionArrayKeys[i] are equal
-		if (strcmp(*letterGrade, conversionArrayKeys[i]) == 0) return conversionArrayValues[i];
+		if (strcmp(letterGrade, &conversionArrayKeys[i]) == 0) return conversionArrayValues[i];
 	}
 
 	//return arbitary impossible value if all checks fail
-	return 100.0f;
+	return -1.0f;
 }
 
 //Initialize _DefaultStudent with static information
