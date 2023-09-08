@@ -2,9 +2,11 @@
 #include <stdio.h>
 
 #include "Handlers.h"
+#include "Utilities.h"
 
 #pragma warning(disable:4996)
 
+//Handle selection screens
 void selectionHandler(int* operationModePtr, char** choicesArray, int choicesArraySize) {
 	/*printf("Type to select access mode\n"
 		"1\t-\tAdministrator mode\n"
@@ -27,10 +29,44 @@ void selectionHandler(int* operationModePtr, char** choicesArray, int choicesArr
 		//check for selected operation mode and update operationMode variable in main()
 		//if input is invalid, repeat prompt
 		if (choicesArray[*operationModePtr - 1]) {
-			printf("%s selected.\n\n\n", choicesArray[*operationModePtr - 1]);
+			flushTerminal();
+			printMenuHeader();
+			printf("%s :\n\n", choicesArray[*operationModePtr - 1]);
 		}
 		else {
 			*operationModePtr = 0;
 		}
 	} while (*operationModePtr == 0);
+}
+
+//---------FUNCTIONS TO HANDLE READING/WRITING OF STUDENT DATA---------
+//Adds student data to data file
+void writeStudentData(char* filename, struct Student* student) {
+	FILE* fptr;
+
+	if ((fptr = fopen(filename, "wb")) == NULL) {
+		printf("Failed to read student data file.");
+		return;
+	}
+
+	fwrite(student, sizeof(struct Student), 1, fptr);
+	fclose(fptr);
+
+	return;
+}
+
+//Reads student data from data file into passed array ptr
+struct Student readStudentData(char* filename) {
+	FILE* fptr;
+
+	if ((fptr = fopen(filename, "rb")) == NULL) {
+		printf("Failed to read student data file.");
+		return;
+	}
+
+	struct Student student;
+	fread(&student, sizeof(struct Student), 1, fptr);
+	fclose(fptr);
+
+	return student;
 }

@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdio.h>
 
 #include "Utilities.h"
 
@@ -7,6 +9,8 @@
 
 //Print menu header
 void printMenuHeader(void) {
+	flushTerminal();
+
 	printf("===================================================\n");
 	printf("||                  Kolej Pasar                  ||\n");
 	printf("===================================================\n");
@@ -15,11 +19,11 @@ void printMenuHeader(void) {
 }
 
 void flushTerminal(void) {
-	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-
+	system("cls");
 	return;
 }
 
+//----------struct Student UTILITY FUNCTIONS---------
 //Accepts input as char letterGrade[3] and returns corresponding grade point value.
 float getGradePoint(char *letterGrade) {
 	char conversionArrayKeys[8][3] = {"A\n", "A-", "B+", "B\n", "B-", "C+", "C\n", "F\n"};
@@ -36,6 +40,7 @@ float getGradePoint(char *letterGrade) {
 	return -1.0f;
 }
 
+//Calculates and updates qualityPoint for struct Student
 void calcQualityPoint(struct Student *studentPtr) {
 	for (int semester = 0; semester < 3; semester++) {
 		for (int course = 0; course < 2; course++) {
@@ -49,6 +54,7 @@ void calcQualityPoint(struct Student *studentPtr) {
 	return;
 }
 
+//Calculates and updates GPA for struct Student
 void calcGPA(struct Student* studentPtr) {
 	for (int semester = 0; semester < 3; semester++) {
 		int totalCreditHour = 0;
@@ -66,6 +72,7 @@ void calcGPA(struct Student* studentPtr) {
 	return;
 }
 
+//Calculates and updates CPGA for struct Student
 void calcCGPA(struct Student* studentPtr) {
 		int totalCreditHour = 0;
 		float totalQualityPoint = 0.0f;
@@ -83,18 +90,42 @@ void calcCGPA(struct Student* studentPtr) {
 	return;
 }
 
-//Initialize _DefaultStudent with static information
-/*struct Student _DefaultStudent = {
-	.semester1 = {
-		.course1.courseCode = "AAA1003",
-		.course2.courseCode = "AAA1014"
-	},
-	.semester2 = {
-		.course1.courseCode = "ABA1003",
-		.course2.courseCode = "ABA1014"
-	},
-	.semester3 = {
-		.course1.courseCode = "ACA1003",
-		.course2.courseCode = "ACA1014"
+//Generates filepath for struct Student based on student.id
+void generateFilepath(struct Student* studentPtr) {
+	strcpy(studentPtr->filepath, strcat(studentPtr->id, ".bin"));
+}
+
+//----------STRING FORMAT CHECK FUNCTIONS----------
+//Check if student ID is in valid format
+int checkIDValidity(char* idString) {
+	//format : ABCD12345
+
+	//Alphabet check
+	for (int i = 0; i < 4; i++) {
+		if (isalpha(idString[i]) == 0) return 0;
 	}
-};*/
+
+	//Numericals check
+	for (int i = 4; i < 9; i++) {
+		if (isdigit(idString[i]) == 0) return 0;
+	}
+
+	return 1;
+}
+
+//Check if course code is in valid format
+int checkCourseCodeValidity(char* courseCodeString) {
+	//format : ABC1234
+
+	//Alphabet check
+	for (int i = 0; i < 3; i++) {
+		if (isalpha(courseCodeString[i]) == 0) return 0;
+	}
+
+	//Numericals check
+	for (int i = 3; i < 7; i++) {
+		if (isdigit(courseCodeString[i]) == 0) return 0;
+	}
+
+	return 1;
+}

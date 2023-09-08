@@ -2,10 +2,13 @@
 
 void printMenuHeader(void);
 void flushTerminal(void);
-float getGradePoint(char* letterGrade[3]);
+float getGradePoint(char* letterGrade);
 void calcQualityPoint(struct Student* studentPtr);
 void calcGPA(struct Student* studentPtr);
 void calcCGPA(struct Student* studentPtr);
+void generateFilepath(struct Student* studentPtr);
+int checkIDValidity(char* idString);
+int checkCourseCodeValidity(char* courseCodeString);
 
 //Structure for Course
 struct Course {
@@ -23,7 +26,8 @@ struct Semester {
 
 //Structure for Student
 struct Student {
-	char name[51];
+	char filepath[101];
+	char name[81];
 	char id[10]; //FORMAT SPECIFIED AS ABCD12345
 	float CGPA;
 	struct Semester semesters[3];
