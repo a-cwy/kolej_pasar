@@ -45,7 +45,7 @@ void writeStudentData(char* filename, struct Student* student) {
 	FILE* fptr;
 
 	if ((fptr = fopen(filename, "wb")) == NULL) {
-		printf("Failed to read student data file.");
+		printf("Failed to create student data file.");
 		return;
 	}
 
@@ -56,17 +56,16 @@ void writeStudentData(char* filename, struct Student* student) {
 }
 
 //Reads student data from data file into passed array ptr
-struct Student readStudentData(char* filename) {
+void readStudentData(char* filename, struct Student* studentPtr) {
 	FILE* fptr;
 
 	if ((fptr = fopen(filename, "rb")) == NULL) {
-		printf("Failed to read student data file.");
+		strcpy(studentPtr->name, "INVALID");
 		return;
 	}
 
-	struct Student student;
-	fread(&student, sizeof(struct Student), 1, fptr);
+	fread(studentPtr, sizeof(struct Student), 1, fptr);
 	fclose(fptr);
 
-	return student;
+	return;
 }

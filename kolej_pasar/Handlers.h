@@ -2,4 +2,4 @@
 
 void selectionHandler(int* operationModePtr, char** choicesArray, int choicesArraySize);
 void writeStudentData(char* filename, struct Student* student);
-struct Student readStudentData(char* filename);
+void readStudentData(char* filename, struct Student* studentPtr);

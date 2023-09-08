@@ -7,17 +7,18 @@
 
 #pragma warning(disable:4996)
 
-const char* operationModesArray[2] = { "Administrator mode", "Student mode"};
+const char* OPERATION_MODES[2] = { "Administrator mode", "Student mode"};
 
 void main(void) {
 	//int operationMode = 1 (admin) || 2 (student)
 	int operationMode = 0;
 	
 	//print screen header
+	flushTerminal();
 	printMenuHeader();
 
 	//prompt for access mode
-	selectionHandler(&operationMode, operationModesArray, 2);
+	selectionHandler(&operationMode, OPERATION_MODES, 2);
 
 	//run relevant function based on operationMode
 	switch (operationMode) {

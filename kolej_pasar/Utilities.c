@@ -9,8 +9,6 @@
 
 //Print menu header
 void printMenuHeader(void) {
-	flushTerminal();
-
 	printf("===================================================\n");
 	printf("||                  Kolej Pasar                  ||\n");
 	printf("===================================================\n");
@@ -26,7 +24,7 @@ void flushTerminal(void) {
 //----------struct Student UTILITY FUNCTIONS---------
 //Accepts input as char letterGrade[3] and returns corresponding grade point value.
 float getGradePoint(char *letterGrade) {
-	char conversionArrayKeys[8][3] = {"A\n", "A-", "B+", "B\n", "B-", "C+", "C\n", "F\n"};
+	char conversionArrayKeys[8][3] = {"A", "A-", "B+", "B", "B-", "C+", "C", "F"};
 	float conversionArrayValues[8] = {4.00f, 3.75f, 3.50f, 3.00f, 2.75f, 2.50f, 2.00f, 0.00f};
 
 
@@ -92,7 +90,9 @@ void calcCGPA(struct Student* studentPtr) {
 
 //Generates filepath for struct Student based on student.id
 void generateFilepath(struct Student* studentPtr) {
-	strcpy(studentPtr->filepath, strcat(studentPtr->id, ".bin"));
+	char temp[15];
+	strcpy(temp, studentPtr->id);
+	strcpy(studentPtr->filepath, strcat(temp, ".bin"));
 }
 
 //----------STRING FORMAT CHECK FUNCTIONS----------
@@ -102,6 +102,7 @@ int checkIDValidity(char* idString) {
 
 	//Alphabet check
 	for (int i = 0; i < 4; i++) {
+		toupper(idString[i]);
 		if (isalpha(idString[i]) == 0) return 0;
 	}
 
@@ -119,6 +120,7 @@ int checkCourseCodeValidity(char* courseCodeString) {
 
 	//Alphabet check
 	for (int i = 0; i < 3; i++) {
+		toupper(courseCodeString[i]);
 		if (isalpha(courseCodeString[i]) == 0) return 0;
 	}
 
