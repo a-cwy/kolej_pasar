@@ -30,7 +30,7 @@ void main(void) {
 			adminMode();
 			break;
 		case 2:
-			//studentMode();
+			studentMode();
 			break;
 		case 3:
 			printf("Thank you for using Kolej Pasar.\n\n");

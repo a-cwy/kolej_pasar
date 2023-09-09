@@ -39,9 +39,6 @@ void selectionHandler(int* operationModePtr, const char** choicesArray, int choi
 	} while (*operationModePtr == 0);
 }
 
-//Login handler
-
-
 //---------FUNCTIONS TO HANDLE READING/WRITING OF STUDENT DATA---------
 //Adds student data to data file
 void writeStudentData(char* filename, struct Student* student) {

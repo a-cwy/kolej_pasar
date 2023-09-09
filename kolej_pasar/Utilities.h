@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #pragma once
 
 void printMenuHeader(void);
