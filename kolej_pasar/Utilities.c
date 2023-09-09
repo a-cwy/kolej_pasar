@@ -102,7 +102,7 @@ int checkIDValidity(char* idString) {
 
 	//Alphabet check
 	for (int i = 0; i < 4; i++) {
-		toupper(idString[i]);
+		idString[i] = toupper(idString[i]);
 		if (isalpha(idString[i]) == 0) return 0;
 	}
 
@@ -120,7 +120,7 @@ int checkCourseCodeValidity(char* courseCodeString) {
 
 	//Alphabet check
 	for (int i = 0; i < 3; i++) {
-		toupper(courseCodeString[i]);
+		courseCodeString[i] = toupper(courseCodeString[i]);
 		if (isalpha(courseCodeString[i]) == 0) return 0;
 	}
 

@@ -7,7 +7,7 @@
 #pragma warning(disable:4996)
 
 //Handle selection screens
-void selectionHandler(int* operationModePtr, char** choicesArray, int choicesArraySize) {
+void selectionHandler(int* operationModePtr, const char** choicesArray, int choicesArraySize) {
 	/*printf("Type to select access mode\n"
 		"1\t-\tAdministrator mode\n"
 		"2\t-\tStudent mode\n\n");*/
@@ -66,6 +66,14 @@ void readStudentData(char* filename, struct Student* studentPtr) {
 
 	fread(studentPtr, sizeof(struct Student), 1, fptr);
 	fclose(fptr);
+
+	return;
+}
+
+void deleteStudentData(char* filename) {
+	if (remove(filename)) {
+		printf("\n\nFailed to delete file.\n\n");
+	}
 
 	return;
 }

@@ -8,10 +8,10 @@
 
 #pragma warning(disable:4996)
 
-const char* ADMIN_FUNCTIONS[5] = { "Add student", "View student", "Edit student", "Delete student"};
+const char* ADMIN_FUNCTIONS[5] = { "Add student", "View student", "Edit student", "Delete student", "Back"};
 
 //FUNCTION DECLARATIONS
-struct Student addStudent();
+void addStudent(struct Student* studentPtr);
 void displayStudentInformation(struct Student* studentPtr);
 
 //main exported adminMode function
@@ -23,28 +23,48 @@ void adminMode(int* operationModePtr) {
 	do {
 		selectedMode = 0;
 		//prompt user for function selection until 0 is entered to exit program
-		selectionHandler(&selectedMode, ADMIN_FUNCTIONS, 4);
+		selectionHandler(&selectedMode, ADMIN_FUNCTIONS, 5);
 		switch (selectedMode) {
 		case 1: //add student
 		{
-			struct Student tempStudent;
-			tempStudent = addStudent();
+			struct Student newStudent;
+			addStudent(&newStudent);
 			
 			//Process struct to generate remaining information
-			generateFilepath(&tempStudent);
-			calcQualityPoint(&tempStudent);
-			calcGPA(&tempStudent);
-			calcCGPA(&tempStudent);
-			writeStudentData(tempStudent.filepath, &tempStudent);
+			generateFilepath(&newStudent);
+			calcQualityPoint(&newStudent);
+			calcGPA(&newStudent);
+			calcCGPA(&newStudent);
+
+			//Check if student already exists, then prompt to overwrite existing information
+			struct Student tempStudent = { .name = "INVALID" };
+			readStudentData(newStudent.filepath, &tempStudent);
+			if (strcmp(tempStudent.name, "INVALID") != 0) { //When existing student is found.
+				printf("\n\nStudent with ID %s already exists. Overwrite existing information? (Y/N) > ", newStudent.id);
+				char choice;
+
+				do { //Input validation
+					rewind(stdin);
+					choice = getchar();
+					choice = toupper(choice);
+				} while (choice != 'Y' && choice != 'N');
+
+				if (choice == 'Y') { //Overwrites data only when user chooses to. Otherwise, no data is written to file.
+					writeStudentData(newStudent.filepath, &newStudent);
+				}
+			}
+			else { //Writes data to new file if no existing student can be found.
+				writeStudentData(newStudent.filepath, &newStudent);
+			}
 
 			flushTerminal();
 			printMenuHeader();
-			printf("Student with ID %s successfully added.\n", tempStudent.id);
+			printf("Student with ID %s successfully added.\n", newStudent.id);
 			break;
 		}
 		case 2: //view student
 		{
-			char tempId[10];
+			char tempId[15];  //10 + 5 for file extension
 
 			//Prompt user for student ID
 			do {
@@ -54,11 +74,12 @@ void adminMode(int* operationModePtr) {
 			} while (checkIDValidity(&tempId) == 0);
 			
 			//Attempt to read student data from relevant file name.
-			struct Student* tempStudent = malloc(sizeof(struct Student));
-			readStudentData(strcat(tempId, ".bin"), tempStudent);
+			//student initialized with INVALID name in case student data cannot be read
+			struct Student student = {.id = "INVALID"};
+			readStudentData(strcat(tempId, ".bin"), &student);
 
 			//Exit switch with error message if student data file cannot be found.
-			if (strcmp(tempStudent->name, "INVALID") == 0) {
+			if (strcmp(student.name, "INVALID") == 0) {
 				flushTerminal();
 				printMenuHeader();
 				printf("Failed to read student data file.\n");
@@ -66,15 +87,65 @@ void adminMode(int* operationModePtr) {
 				break;
 			};
 
-			displayStudentInformation(tempStudent);
+			displayStudentInformation(&student);
 			flushTerminal();
 			printMenuHeader();
 			break;
 		}
 		case 3: //edit student
+		{
+			struct Student newStudent;
+
+			//Get studentID to be edited
+			do {
+				printf("Enter student ID to be edited (ABCD12345) > ");
+				rewind(stdin);
+				fgets(newStudent.id, 10, stdin);
+			} while (checkIDValidity(newStudent.id) == 0);
+
+			generateFilepath(&newStudent);
+
+			//Check if student exists
+			struct Student tempStudent = { .name = "INVALID" };
+			readStudentData(newStudent.filepath, &tempStudent);
+			if (strcmp(tempStudent.name, "INVALID") != 0) { //When existing student is found.
+				printf("\n\nEnter new student information.\n");
+
+				//Save old student filepath to delete relevant datafile if studentID is edited.
+				char oldFilepath[15];
+				strcpy(&oldFilepath, &newStudent.id);
+				strcat(&oldFilepath, ".bin");
+
+				addStudent(&newStudent);
+				
+				//Process struct to generate remaining information
+				generateFilepath(&newStudent);
+				calcQualityPoint(&newStudent);
+				calcGPA(&newStudent);
+				calcCGPA(&newStudent);
+
+				writeStudentData(newStudent.filepath, &newStudent);
+				//Delete relevant old datafile if studentID is edited.
+				if (strcmp(&oldFilepath, &newStudent.filepath) != 0) {
+					deleteStudentData(&oldFilepath);
+				}
+
+				flushTerminal();
+				printMenuHeader();
+				printf("Student with ID %s successfully edited.\n\n", newStudent.id);
+			}
+			else { //Prints error and exits if no existing student can be found.
+				flushTerminal();
+				printMenuHeader();
+				printf("No such student with ID %s can be found.\n\n", newStudent.id);
+			}
+			
 			break;
+		}
 		case 4: //delete student
 			break;
+		case 5:
+			return; //exit admin mode
 		default:
 			break;
 		}
@@ -83,20 +154,17 @@ void adminMode(int* operationModePtr) {
 
 //----------ADDITIONAL FUNCTIONS----------
 //Creates a new struct Student and returns it with initialized data based on user input
-struct Student addStudent(void) {
-	//Create temporary struct Student to return after function
-	struct Student tempStudent = {.id = "INVALID"};
-
+void addStudent(struct Student* studentPtr) {
 	//Get student data from user input
 	do {
 		printf("Enter student ID (ABCD12345) > ");
 		rewind(stdin);
-		fgets(tempStudent.id, 10, stdin);
-	} while (checkIDValidity(&tempStudent.id) == 0);
+		fgets(studentPtr->id, 10, stdin);
+	} while (checkIDValidity(studentPtr->id) == 0);
 	
 	printf("Enter student name > ");
 	rewind(stdin);
-	fgets(tempStudent.name, 81, stdin);
+	fgets(studentPtr->name, 81, stdin);
 
 	//Loop to get semester and course information
 	printf("--------------------------------------------------");
@@ -106,14 +174,14 @@ struct Student addStudent(void) {
 			do {
 				printf("Course code (AAA1000) \t> ");
 				rewind(stdin);
-				fgets(tempStudent.semesters[semester].courses[course].courseCode, 8, stdin);
-			} while (checkCourseCodeValidity(tempStudent.semesters[semester].courses[course].courseCode) == 0);
+				fgets(studentPtr->semesters[semester].courses[course].courseCode, 8, stdin);
+			} while (checkCourseCodeValidity(studentPtr->semesters[semester].courses[course].courseCode) == 0);
 			
 			do
 			{
 				printf("Credit Hours \t\t> ");
 				rewind(stdin);
-			} while (!scanf("%d", &tempStudent.semesters[semester].courses[course].creditHour));
+			} while (!scanf("%d", &studentPtr->semesters[semester].courses[course].creditHour));
 			
 			//loop to re-prompt for valid letterGrade value
 			char inputBuffer[3];
@@ -124,14 +192,14 @@ struct Student addStudent(void) {
 				fgets(inputBuffer, 3, stdin);
 				if (inputBuffer[1] == '\n') inputBuffer[1] = '\0';
 			} while (getGradePoint(&inputBuffer) < 0.0f);
-			strcpy(&tempStudent.semesters[semester].courses[course].letterGrade, &inputBuffer);
+			strcpy(&studentPtr->semesters[semester].courses[course].letterGrade, &inputBuffer);
 
 
 			printf("--------------------------------------------------");
 		}
 	}
 
-	return(tempStudent);
+	return;
 }
 
 //Displays formatted data from struct Student

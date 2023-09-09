@@ -7,31 +7,37 @@
 
 #pragma warning(disable:4996)
 
-const char* OPERATION_MODES[2] = { "Administrator mode", "Student mode"};
+const char* OPERATION_MODES[3] = { "Administrator mode", "Student mode", "Exit"};
 
 void main(void) {
-	//int operationMode = 1 (admin) || 2 (student)
-	int operationMode = 0;
-	
-	//print screen header
-	flushTerminal();
-	printMenuHeader();
+	int operationMode;
 
-	//prompt for access mode
-	selectionHandler(&operationMode, OPERATION_MODES, 2);
+	do {
+		operationMode = 0;
 
-	//run relevant function based on operationMode
-	switch (operationMode) {
-	//admin mode	
-	case 1:
-		adminMode(&operationMode);
-		break;
-	case 2:
-		break;
-	default:
-		printf("Unexpected invalid operation mode, please restart program.");
-		break;
-	}
+		//print screen header
+		flushTerminal();
+		printMenuHeader();
+
+		//prompt for access mode
+		selectionHandler(&operationMode, OPERATION_MODES, 3);
+
+		//run relevant function based on operationMode
+		switch (operationMode) {
+			//admin mode	
+		case 1:
+			adminMode(&operationMode);
+			break;
+		case 2:
+			break;
+		case 3:
+			printf("Thank you for using Kolej Pasar.\n\n");
+			break;
+		default:
+			printf("\n\nUnexpected invalid operation mode, please restart program.\n\n");
+			break;
+		}
+	} while (operationMode != 3);
 
 	system("pause");
 }
