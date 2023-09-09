@@ -2,6 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "Utilities.h"
 
@@ -97,37 +98,37 @@ void generateFilepath(struct Student* studentPtr) {
 
 //----------STRING FORMAT CHECK FUNCTIONS----------
 //Check if student ID is in valid format
-int checkIDValidity(char* idString) {
+bool checkIDValidity(char* idString) {
 	//format : ABCD12345
 
 	//Alphabet check
 	for (int i = 0; i < 4; i++) {
 		idString[i] = toupper(idString[i]);
-		if (isalpha(idString[i]) == 0) return 0;
+		if (isalpha(idString[i]) == 0) return false;
 	}
 
 	//Numericals check
 	for (int i = 4; i < 9; i++) {
-		if (isdigit(idString[i]) == 0) return 0;
+		if (isdigit(idString[i]) == 0) return false;
 	}
 
-	return 1;
+	return true;
 }
 
 //Check if course code is in valid format
-int checkCourseCodeValidity(char* courseCodeString) {
+bool checkCourseCodeValidity(char* courseCodeString) {
 	//format : ABC1234
 
 	//Alphabet check
 	for (int i = 0; i < 3; i++) {
 		courseCodeString[i] = toupper(courseCodeString[i]);
-		if (isalpha(courseCodeString[i]) == 0) return 0;
+		if (isalpha(courseCodeString[i]) == 0) return false;
 	}
 
 	//Numericals check
 	for (int i = 3; i < 7; i++) {
-		if (isdigit(courseCodeString[i]) == 0) return 0;
+		if (isdigit(courseCodeString[i]) == 0) return false;
 	}
 
-	return 1;
+	return true;
 }

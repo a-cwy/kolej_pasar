@@ -1,2 +1,2 @@
 #pragma once
-void adminMode(int* operationModePtr);
+void adminMode();

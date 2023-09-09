@@ -7,8 +7,8 @@ void calcQualityPoint(struct Student* studentPtr);
 void calcGPA(struct Student* studentPtr);
 void calcCGPA(struct Student* studentPtr);
 void generateFilepath(struct Student* studentPtr);
-int checkIDValidity(char* idString);
-int checkCourseCodeValidity(char* courseCodeString);
+bool checkIDValidity(char* idString);
+bool checkCourseCodeValidity(char* courseCodeString);
 
 //Structure for Course
 struct Course {

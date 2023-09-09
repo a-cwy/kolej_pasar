@@ -15,7 +15,7 @@ void addStudent(struct Student* studentPtr);
 void displayStudentInformation(struct Student* studentPtr);
 
 //main exported adminMode function
-void adminMode(int* operationModePtr) {
+void adminMode() {
 	int selectedMode;
 
 	flushTerminal();
@@ -39,15 +39,16 @@ void adminMode(int* operationModePtr) {
 			//Check if student already exists, then prompt to overwrite existing information
 			struct Student tempStudent = { .name = "INVALID" };
 			readStudentData(newStudent.filepath, &tempStudent);
+
 			if (strcmp(tempStudent.name, "INVALID") != 0) { //When existing student is found.
 				printf("\n\nStudent with ID %s already exists. Overwrite existing information? (Y/N) > ", newStudent.id);
 
 				char choice;
-				do { //Input validation
+				do { 
 					rewind(stdin);
 					choice = getchar();
 					choice = toupper(choice);
-				} while (choice != 'Y' && choice != 'N');
+				} while (choice != 'Y' && choice != 'N'); //Input validation
 
 				if (choice == 'Y') { //Overwrites data only when user chooses to. Otherwise, no data is written to file.
 					writeStudentData(newStudent.filepath, &newStudent);
@@ -72,7 +73,7 @@ void adminMode(int* operationModePtr) {
 				printf("Enter student ID to view > ");
 				rewind(stdin);
 				fgets(tempId, 10, stdin);
-			} while (checkIDValidity(&tempId) == 0);
+			} while (!checkIDValidity(&tempId));
 			
 			//Attempt to read student data from relevant file name.
 			//student initialized with INVALID name in case student data cannot be read
@@ -102,7 +103,7 @@ void adminMode(int* operationModePtr) {
 				printf("Enter student ID to be edited (ABCD12345) > ");
 				rewind(stdin);
 				fgets(newStudent.id, 10, stdin);
-			} while (checkIDValidity(newStudent.id) == 0);
+			} while (!checkIDValidity(newStudent.id));
 
 			generateFilepath(&newStudent);
 
@@ -152,7 +153,7 @@ void adminMode(int* operationModePtr) {
 				printf("Enter student ID to be deleted (ABCD12345) > ");
 				rewind(stdin);
 				fgets(student.id, 10, stdin);
-			} while (checkIDValidity(student.id) == 0);
+			} while (!checkIDValidity(student.id));
 
 			generateFilepath(&student);
 
@@ -164,11 +165,11 @@ void adminMode(int* operationModePtr) {
 				printf("Deleting student with ID %s. Are you sure? (Y/N) > ", student.id);
 
 				char choice;
-				do { //Input validation
+				do {
 					rewind(stdin);
 					choice = getchar();
 					choice = toupper(choice);
-				} while (choice != 'Y' && choice != 'N');
+				} while (choice != 'Y' && choice != 'N'); //Input validation
 
 				if (choice == 'Y') {
 					//Delete relevant datafile.
@@ -207,7 +208,7 @@ void addStudent(struct Student* studentPtr) {
 		printf("Enter student ID (ABCD12345) > ");
 		rewind(stdin);
 		fgets(studentPtr->id, 10, stdin);
-	} while (checkIDValidity(studentPtr->id) == 0);
+	} while (!checkIDValidity(studentPtr->id));
 	
 	printf("Enter student name > ");
 	rewind(stdin);
@@ -222,7 +223,7 @@ void addStudent(struct Student* studentPtr) {
 				printf("Course code (AAA1000) \t> ");
 				rewind(stdin);
 				fgets(studentPtr->semesters[semester].courses[course].courseCode, 8, stdin);
-			} while (checkCourseCodeValidity(studentPtr->semesters[semester].courses[course].courseCode) == 0);
+			} while (!checkCourseCodeValidity(studentPtr->semesters[semester].courses[course].courseCode));
 			
 			do
 			{

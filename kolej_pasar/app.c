@@ -4,6 +4,7 @@
 #include "Handlers.h"
 #include "Utilities.h"
 #include "Admin.h"
+#include "Student.h"
 
 #pragma warning(disable:4996)
 
@@ -26,9 +27,10 @@ void main(void) {
 		switch (operationMode) {
 			//admin mode	
 		case 1:
-			adminMode(&operationMode);
+			adminMode();
 			break;
 		case 2:
+			//studentMode();
 			break;
 		case 3:
 			printf("Thank you for using Kolej Pasar.\n\n");
