@@ -41,8 +41,8 @@ void adminMode(int* operationModePtr) {
 			readStudentData(newStudent.filepath, &tempStudent);
 			if (strcmp(tempStudent.name, "INVALID") != 0) { //When existing student is found.
 				printf("\n\nStudent with ID %s already exists. Overwrite existing information? (Y/N) > ", newStudent.id);
-				char choice;
 
+				char choice;
 				do { //Input validation
 					rewind(stdin);
 					choice = getchar();
@@ -51,6 +51,7 @@ void adminMode(int* operationModePtr) {
 
 				if (choice == 'Y') { //Overwrites data only when user chooses to. Otherwise, no data is written to file.
 					writeStudentData(newStudent.filepath, &newStudent);
+					break;
 				}
 			}
 			else { //Writes data to new file if no existing student can be found.
@@ -143,7 +144,53 @@ void adminMode(int* operationModePtr) {
 			break;
 		}
 		case 4: //delete student
+		{
+			struct Student student;
+
+			//Get studentID to be deleted
+			do {
+				printf("Enter student ID to be deleted (ABCD12345) > ");
+				rewind(stdin);
+				fgets(student.id, 10, stdin);
+			} while (checkIDValidity(student.id) == 0);
+
+			generateFilepath(&student);
+
+			//Check if student exists
+			struct Student tempStudent = { .name = "INVALID" };
+			readStudentData(student.filepath, &tempStudent);
+			if (strcmp(tempStudent.name, "INVALID") != 0) { //When existing student is found.
+				//Confirmation prompt
+				printf("Deleting student with ID %s. Are you sure? (Y/N) > ", student.id);
+
+				char choice;
+				do { //Input validation
+					rewind(stdin);
+					choice = getchar();
+					choice = toupper(choice);
+				} while (choice != 'Y' && choice != 'N');
+
+				if (choice == 'Y') {
+					//Delete relevant datafile.
+					deleteStudentData(&student.filepath);
+					flushTerminal();
+					printMenuHeader();
+					printf("Student with ID %s successfully deleted.\n\n", student.id);
+					break;
+				}
+			}
+			else { //When existing student cannot be found
+				flushTerminal();
+				printMenuHeader();
+				printf("Student with ID %s does not exist.\n\n", student.id);
+				break;
+			}
+
+			//When user rejects delete confirmation
+			flushTerminal();
+			printMenuHeader();
 			break;
+		}
 		case 5:
 			return; //exit admin mode
 		default:
