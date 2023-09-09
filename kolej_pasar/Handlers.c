@@ -22,11 +22,11 @@ void selectionHandler(int* operationModePtr, const char** choicesArray, int choi
 	do {
 		printf("> ");
 
-		//return value check
 		rewind(stdin);
-		if (!scanf("%d", operationModePtr)) continue;
+		//return value check
+		if (scanf("%d", operationModePtr) == 0) continue;
 
-		//check for selected operation mode and update operationMode variable in main()
+		//check for selected operation mode and update operationMode variable
 		//if input is invalid, repeat prompt
 		if (choicesArray[*operationModePtr - 1]) {
 			flushTerminal();
@@ -44,6 +44,7 @@ void selectionHandler(int* operationModePtr, const char** choicesArray, int choi
 void writeStudentData(char* filename, struct Student* student) {
 	FILE* fptr;
 
+	//Check if file is successfully opened
 	if ((fptr = fopen(filename, "wb")) == NULL) {
 		printf("Failed to create student data file.");
 		return;
@@ -59,6 +60,7 @@ void writeStudentData(char* filename, struct Student* student) {
 void readStudentData(char* filename, struct Student* studentPtr) {
 	FILE* fptr;
 
+	//Check if file is successfully opened
 	if ((fptr = fopen(filename, "rb")) == NULL) {
 		strcpy(studentPtr->name, "INVALID");
 		return;

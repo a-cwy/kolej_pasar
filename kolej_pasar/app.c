@@ -25,18 +25,16 @@ void main(void) {
 
 		//run relevant function based on operationMode
 		switch (operationMode) {
-			//admin mode	
-		case 1:
+		case 1: //admin mode
 			adminMode();
 			break;
-		case 2:
+		case 2: //student mode
 			studentMode();
 			break;
-		case 3:
+		case 3: //exit
 			printf("Thank you for using Kolej Pasar.\n\n");
 			break;
 		default:
-			printf("\n\nUnexpected invalid operation mode, please restart program.\n\n");
 			break;
 		}
 	} while (operationMode != 3);

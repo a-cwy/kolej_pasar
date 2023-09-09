@@ -16,15 +16,15 @@ void displayStudentInformation(struct Student* studentPtr);
 
 //main exported adminMode function
 void adminMode() {
-	int selectedMode;
+	int selectedFunction;
 
 	flushTerminal();
 	printMenuHeader();
 	do {
-		selectedMode = 0;
-		//prompt user for function selection until 0 is entered to exit program
-		selectionHandler(&selectedMode, ADMIN_FUNCTIONS, 5);
-		switch (selectedMode) {
+		selectedFunction = 0;
+		//prompt user for function selection
+		selectionHandler(&selectedFunction, ADMIN_FUNCTIONS, 5);
+		switch (selectedFunction) {
 		case 1: //add student
 		{
 			struct Student newStudent;
@@ -192,12 +192,12 @@ void adminMode() {
 			printMenuHeader();
 			break;
 		}
-		case 5:
-			return; //exit admin mode
+		case 5: //exit admin mode
+			return; 
 		default:
 			break;
 		}
-	} while (selectedMode != 0);
+	} while (selectedFunction != 0);
 }
 
 //----------ADDITIONAL FUNCTIONS----------
@@ -248,77 +248,4 @@ void addStudent(struct Student* studentPtr) {
 	}
 
 	return;
-}
-
-//Displays formatted data from struct Student
-void displayStudentInformation(struct Student* studentPtr) {
-	/* Display Format
-	Name	:	Test Student
-	ID		:	QQQQ11111
-	CGPA	:	4.0
-
-	#_____________________________________________________________________________#
-	|Semester 1				  |Semester 2				|Semester 3				  |
-	|-------------------------|-------------------------|-------------------------|
-	|Course		:	AAA1000	  |Course	  :	  AAB1000	|Course		:	AAC1000	  |
-	|Grade		:	A		  |Grade	  :	  A			|Grade		:	A		  |
-	|Cr. Hours  :	3		  |Cr. Hours  :	  3			|Cr. Hours  :	3		  |
-	|						  |							|						  |
-	|Course		:	AAA2000	  |Course	  :	  AAB2000	|Course		:	AAC2000	  |
-	|Grade		:	A		  |Grade	  :	  A			|Grade		:	A		  |
-	|Cr. Hours  :	3		  |Cr. Hours  :	  3			|Cr. Hours  :	3		  |
-	|						  |							|						  |
-	|GPA		:	4.0		  |GPA		:	4.0		    |GPA		:	4.0		  |
-	#-----------------------------------------------------------------------------#
-
-	Press enter to go back.
-	*/
-	flushTerminal();
-	printMenuHeader();
-
-	printf("%-8s: %s", "Name", studentPtr->name);
-	printf("%-8s: %s\n", "ID", studentPtr->id);
-	printf("%-8s: %.2f\n", "CGPA", studentPtr->CGPA);
-	printf("\n");
-	printf("#_____________________________________________________________________________#\n");
-	printf("|Semester 1               |Semester 2               |Semester 3               |\n");
-	printf("|-------------------------|-------------------------|-------------------------|\n");
-	
-	for (int course = 0; course < 2; course++) {
-		printf("|");
-		for (int semester = 0; semester < 3; semester++) {
-			printf("%-11s:   %-10s", "Course", studentPtr->semesters[semester].courses[course].courseCode);
-			printf("|");
-		}
-		printf("\n");
-	
-		printf("|");
-		for (int semester = 0; semester < 3; semester++) {
-			printf("%-11s:   %-10s", "Grade", studentPtr->semesters[semester].courses[course].letterGrade);
-			printf("|");
-		}
-		printf("\n");
-	
-		printf("|");
-		for (int semester = 0; semester < 3; semester++) {
-			printf("%-11s:   %-10d", "Cr. Hours", studentPtr->semesters[semester].courses[course].creditHour);
-			printf("|");
-		}
-		printf("\n");
-		printf("|                         |                         |                         |\n");
-	}
-
-	printf("|");
-	for (int semester = 0; semester < 3; semester++) {
-		printf("%-11s:   %-10.2f", "GPA", studentPtr->semesters[semester].GPA);
-		printf("|");
-	}
-	printf("\n");
-
-	printf("#_____________________________________________________________________________#\n");
-	printf("\n\n");
-
-	printf("Press enter to go back.");
-	rewind(stdin);
-	gets();
 }

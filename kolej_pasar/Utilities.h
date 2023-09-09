@@ -9,6 +9,7 @@ void calcQualityPoint(struct Student* studentPtr);
 void calcGPA(struct Student* studentPtr);
 void calcCGPA(struct Student* studentPtr);
 void generateFilepath(struct Student* studentPtr);
+void displayStudentInformation(struct Student* studentPtr);
 bool checkIDValidity(char* idString);
 bool checkCourseCodeValidity(char* courseCodeString);
 

@@ -8,6 +8,7 @@
 
 #pragma warning(disable:4996)
 
+//----------OUTPUT FUNCTIONS----------
 //Print menu header
 void printMenuHeader(void) {
 	printf("===================================================\n");
@@ -21,6 +22,10 @@ void flushTerminal(void) {
 	system("cls");
 	return;
 }
+
+
+
+
 
 //----------struct Student UTILITY FUNCTIONS---------
 //Accepts input as char letterGrade[3] and returns corresponding grade point value.
@@ -96,6 +101,83 @@ void generateFilepath(struct Student* studentPtr) {
 	strcpy(studentPtr->filepath, strcat(temp, ".bin"));
 }
 
+//Displays formatted data from struct Student
+void displayStudentInformation(struct Student* studentPtr) {
+	/* Display Format
+	Name	:	Test Student
+	ID		:	QQQQ11111
+	CGPA	:	4.0
+
+	#_____________________________________________________________________________#
+	|Semester 1				  |Semester 2				|Semester 3				  |
+	|-------------------------|-------------------------|-------------------------|
+	|Course		:	AAA1000	  |Course	  :	  AAB1000	|Course		:	AAC1000	  |
+	|Grade		:	A		  |Grade	  :	  A			|Grade		:	A		  |
+	|Cr. Hours  :	3		  |Cr. Hours  :	  3			|Cr. Hours  :	3		  |
+	|						  |							|						  |
+	|Course		:	AAA2000	  |Course	  :	  AAB2000	|Course		:	AAC2000	  |
+	|Grade		:	A		  |Grade	  :	  A			|Grade		:	A		  |
+	|Cr. Hours  :	3		  |Cr. Hours  :	  3			|Cr. Hours  :	3		  |
+	|						  |							|						  |
+	|GPA		:	4.0		  |GPA		:	4.0		    |GPA		:	4.0		  |
+	#-----------------------------------------------------------------------------#
+
+	Press enter to go back.
+	*/
+	flushTerminal();
+	printMenuHeader();
+
+	printf("%-8s: %s", "Name", studentPtr->name);
+	printf("%-8s: %s\n", "ID", studentPtr->id);
+	printf("%-8s: %.2f\n", "CGPA", studentPtr->CGPA);
+	printf("\n");
+	printf("#_____________________________________________________________________________#\n");
+	printf("|Semester 1               |Semester 2               |Semester 3               |\n");
+	printf("|-------------------------|-------------------------|-------------------------|\n");
+
+	for (int course = 0; course < 2; course++) {
+		printf("|");
+		for (int semester = 0; semester < 3; semester++) {
+			printf("%-11s:   %-10s", "Course", studentPtr->semesters[semester].courses[course].courseCode);
+			printf("|");
+		}
+		printf("\n");
+
+		printf("|");
+		for (int semester = 0; semester < 3; semester++) {
+			printf("%-11s:   %-10s", "Grade", studentPtr->semesters[semester].courses[course].letterGrade);
+			printf("|");
+		}
+		printf("\n");
+
+		printf("|");
+		for (int semester = 0; semester < 3; semester++) {
+			printf("%-11s:   %-10d", "Cr. Hours", studentPtr->semesters[semester].courses[course].creditHour);
+			printf("|");
+		}
+		printf("\n");
+		printf("|                         |                         |                         |\n");
+	}
+
+	printf("|");
+	for (int semester = 0; semester < 3; semester++) {
+		printf("%-11s:   %-10.2f", "GPA", studentPtr->semesters[semester].GPA);
+		printf("|");
+	}
+	printf("\n");
+
+	printf("#_____________________________________________________________________________#\n");
+	printf("\n\n");
+
+	printf("Press enter to go back.");
+	rewind(stdin);
+	gets();
+}
+
+
+
+
+
 //----------STRING FORMAT CHECK FUNCTIONS----------
 //Check if student ID is in valid format
 bool checkIDValidity(char* idString) {
@@ -132,3 +214,4 @@ bool checkCourseCodeValidity(char* courseCodeString) {
 
 	return true;
 }
+
