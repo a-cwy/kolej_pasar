@@ -8,11 +8,15 @@
 
 #pragma warning(disable:4996)
 
+#define SCHOLARSHIP_100_THRESHOLD 3.85
+#define SCHOLARSHIP_50_THRESHOLD 3.75
+
 const char* STUDENT_FUNCTIONS[2] = {"View Score", "Back"};
+
+void displayScholarshipEligibility(struct Student* studentPtr);
 
 void studentMode() {
 	int selectedFunction;
-	
 	flushTerminal();
 	printMenuHeader();
 
@@ -49,7 +53,11 @@ void studentMode() {
 				break;
 			};
 
+			flushTerminal();
+			printMenuHeader();
+			displayScholarshipEligibility(&student);
 			displayStudentInformation(&student);
+
 			flushTerminal();
 			printMenuHeader();
 			break;
@@ -60,4 +68,37 @@ void studentMode() {
 			break;
 		}
 	} while (selectedFunction != 2);
+}
+
+//----------ADDITIONAL FUNCTIONS----------
+//Check scholarship eligibility and displays a message based on results.
+void displayScholarshipEligibility(struct Student* studentPtr) {
+	int scholarshipRate = 0;
+
+	//Check for failed subjects and return with message if any are found
+	for (int semester = 0; semester < 3; semester++) {
+		for (int course = 0; course < 2; course++) {
+			if (strcmp(studentPtr->semesters[semester].courses[course].letterGrade, "F") == 0) {
+				printf("Sorry, you are not eligible for any scholarship.\n\n");
+				return;
+			}
+		}
+	}
+
+	//Get scholarship rate based on threshold
+	if (studentPtr->CGPA >= SCHOLARSHIP_100_THRESHOLD) {
+		scholarshipRate = 100;
+	}
+	else if (studentPtr->CGPA >= SCHOLARSHIP_50_THRESHOLD) {
+		scholarshipRate = 50;
+	}
+
+	//Print message and return if student does not meet threshold
+	if (scholarshipRate == 0) {
+		printf("Sorry, you are not eligible for any scholarship.\n\n");
+		return;
+	}
+
+	printf("Congratulations! You are eligible for a %d%% scholarship!\n\n", scholarshipRate);
+	return;
 }

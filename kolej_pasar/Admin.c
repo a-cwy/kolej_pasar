@@ -80,19 +80,22 @@ void adminMode() {
 			struct Student student = {.id = "INVALID"};
 			readStudentData(strcat(tempId, ".bin"), &student);
 
-//Exit switch with error message if student data file cannot be found.
-if (strcmp(student.name, "INVALID") == 0) {
-	flushTerminal();
-	printMenuHeader();
-	printf("Failed to read student data file.\n");
-	printf("Please check if student ID was correctly typed.\n\n");
-	break;
-};
+			//Exit switch with error message if student data file cannot be found.
+			if (strcmp(student.name, "INVALID") == 0) {
+				flushTerminal();
+				printMenuHeader();
+				printf("Failed to read student data file.\n");
+				printf("Please check if student ID was correctly typed.\n\n");
+				break;
+			};
+			
+			flushTerminal();
+			printMenuHeader();
+			displayStudentInformation(&student);
 
-displayStudentInformation(&student);
-flushTerminal();
-printMenuHeader();
-break;
+			flushTerminal();
+			printMenuHeader();
+			break;
 		}
 		case 3: //delete student
 		{

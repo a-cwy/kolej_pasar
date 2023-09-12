@@ -124,9 +124,6 @@ void displayStudentInformation(struct Student* studentPtr) {
 
 	Press enter to go back.
 	*/
-	flushTerminal();
-	printMenuHeader();
-
 	printf("%-8s: %s", "Name", studentPtr->name);
 	printf("%-8s: %s\n", "ID", studentPtr->id);
 	printf("%-8s: %.2f\n", "CGPA", studentPtr->CGPA);
