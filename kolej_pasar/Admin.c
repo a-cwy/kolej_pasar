@@ -80,19 +80,19 @@ void adminMode() {
 			struct Student student = {.id = "INVALID"};
 			readStudentData(strcat(tempId, ".bin"), &student);
 
-			//Exit switch with error message if student data file cannot be found.
-			if (strcmp(student.name, "INVALID") == 0) {
-				flushTerminal();
-				printMenuHeader();
-				printf("Failed to read student data file.\n");
-				printf("Please check if student ID was correctly typed.\n\n");
-				break;
-			};
+//Exit switch with error message if student data file cannot be found.
+if (strcmp(student.name, "INVALID") == 0) {
+	flushTerminal();
+	printMenuHeader();
+	printf("Failed to read student data file.\n");
+	printf("Please check if student ID was correctly typed.\n\n");
+	break;
+};
 
-			displayStudentInformation(&student);
-			flushTerminal();
-			printMenuHeader();
-			break;
+displayStudentInformation(&student);
+flushTerminal();
+printMenuHeader();
+break;
 		}
 		case 3: //delete student
 		{
@@ -143,7 +143,7 @@ void adminMode() {
 			break;
 		}
 		case 4: //exit admin mode
-			return; 
+			return;
 		default:
 			break;
 		}
@@ -159,7 +159,7 @@ void addStudent(struct Student* studentPtr) {
 		rewind(stdin);
 		fgets(studentPtr->id, 10, stdin);
 	} while (!checkIDValidity(studentPtr->id));
-	
+
 	printf("Enter student name > ");
 	rewind(stdin);
 	fgets(studentPtr->name, 81, stdin);
@@ -168,18 +168,21 @@ void addStudent(struct Student* studentPtr) {
 	printf("--------------------------------------------------");
 	for (int semester = 0; semester < 3; semester++) {
 		for (int course = 0; course < 2; course++) {
-			printf("\nEnter information for semester %d course %d.\n",semester + 1, course + 1);
+			printf("\nEnter information for semester %d course %d.\n", semester + 1, course + 1);
+
+			//Validation for couse code format
 			do {
 				printf("Course code (AAA1000) \t> ");
 				rewind(stdin);
 				fgets(studentPtr->semesters[semester].courses[course].courseCode, 8, stdin);
 			} while (!checkCourseCodeValidity(studentPtr->semesters[semester].courses[course].courseCode));
-			
-			do
-			{
+
+			//Validation: only integer values above 0
+			do {
 				printf("Credit Hours \t\t> ");
 				rewind(stdin);
-			} while (!scanf("%d", &studentPtr->semesters[semester].courses[course].creditHour));
+				if (scanf("%d", &studentPtr->semesters[semester].courses[course].creditHour) != 1) continue;
+			} while (studentPtr->semesters[semester].courses[course].creditHour <= 0);
 			
 			//loop to re-prompt for valid letterGrade value
 			char inputBuffer[3];
@@ -188,6 +191,8 @@ void addStudent(struct Student* studentPtr) {
 					"Grade\t\t\t> ");
 				rewind(stdin);
 				fgets(inputBuffer, 3, stdin);
+
+				//replaces newline for single character grades
 				if (inputBuffer[1] == '\n') inputBuffer[1] = '\0';
 			} while (getGradePoint(&inputBuffer) < 0.0f);
 			strcpy(&studentPtr->semesters[semester].courses[course].letterGrade, &inputBuffer);
