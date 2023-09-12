@@ -8,7 +8,7 @@
 
 #pragma warning(disable:4996)
 
-const char* ADMIN_FUNCTIONS[5] = { "Add student", "View student", "Edit student", "Delete student", "Back"};
+const char* ADMIN_FUNCTIONS[4] = { "Add student", "View student", "Delete student", "Back"};
 
 //FUNCTION DECLARATIONS
 void addStudent(struct Student* studentPtr);
@@ -23,7 +23,7 @@ void adminMode() {
 	do {
 		selectedFunction = 0;
 		//prompt user for function selection
-		selectionHandler(&selectedFunction, ADMIN_FUNCTIONS, 5);
+		selectionHandler(&selectedFunction, ADMIN_FUNCTIONS, 4);
 		switch (selectedFunction) {
 		case 1: //add student
 		{
@@ -94,57 +94,7 @@ void adminMode() {
 			printMenuHeader();
 			break;
 		}
-		case 3: //edit student
-		{
-			struct Student newStudent;
-
-			//Get studentID to be edited
-			do {
-				printf("Enter student ID to be edited (ABCD12345) > ");
-				rewind(stdin);
-				fgets(newStudent.id, 10, stdin);
-			} while (!checkIDValidity(newStudent.id));
-
-			generateFilepath(&newStudent);
-
-			//Check if student exists
-			struct Student tempStudent = { .name = "INVALID" };
-			readStudentData(newStudent.filepath, &tempStudent);
-			if (strcmp(tempStudent.name, "INVALID") != 0) { //When existing student is found.
-				printf("\n\nEnter new student information.\n");
-
-				//Save old student filepath to delete relevant datafile if studentID is edited.
-				char oldFilepath[15];
-				strcpy(oldFilepath, &newStudent.id);
-				strcat(oldFilepath, ".bin");
-
-				addStudent(&newStudent);
-				
-				//Process struct to generate remaining information
-				generateFilepath(&newStudent);
-				calcQualityPoint(&newStudent);
-				calcGPA(&newStudent);
-				calcCGPA(&newStudent);
-
-				writeStudentData(newStudent.filepath, &newStudent);
-				//Delete relevant old datafile if studentID is edited.
-				if (strcmp(&oldFilepath, &newStudent.filepath) != 0) {
-					deleteStudentData(&oldFilepath);
-				}
-
-				flushTerminal();
-				printMenuHeader();
-				printf("Student with ID %s successfully edited.\n\n", newStudent.id);
-			}
-			else { //Prints error and exits if no existing student can be found.
-				flushTerminal();
-				printMenuHeader();
-				printf("No such student with ID %s can be found.\n\n", newStudent.id);
-			}
-			
-			break;
-		}
-		case 4: //delete student
+		case 3: //delete student
 		{
 			struct Student student;
 
@@ -192,7 +142,7 @@ void adminMode() {
 			printMenuHeader();
 			break;
 		}
-		case 5: //exit admin mode
+		case 4: //exit admin mode
 			return; 
 		default:
 			break;
