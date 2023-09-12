@@ -73,7 +73,7 @@ void adminMode() {
 				printf("Enter student ID to view > ");
 				rewind(stdin);
 				fgets(tempId, 10, stdin);
-			} while (!checkIDValidity(&tempId));
+			} while (!checkIDValidity(tempId));
 			
 			//Attempt to read student data from relevant file name.
 			//student initialized with INVALID name in case student data cannot be read
@@ -115,8 +115,8 @@ void adminMode() {
 
 				//Save old student filepath to delete relevant datafile if studentID is edited.
 				char oldFilepath[15];
-				strcpy(&oldFilepath, &newStudent.id);
-				strcat(&oldFilepath, ".bin");
+				strcpy(oldFilepath, &newStudent.id);
+				strcat(oldFilepath, ".bin");
 
 				addStudent(&newStudent);
 				

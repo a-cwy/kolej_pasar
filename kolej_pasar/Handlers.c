@@ -28,7 +28,7 @@ void selectionHandler(int* operationModePtr, const char** choicesArray, int choi
 
 		//check for selected operation mode and update operationMode variable
 		//if input is invalid, repeat prompt
-		if (choicesArray[*operationModePtr - 1]) {
+		if (*operationModePtr <= choicesArraySize) {
 			flushTerminal();
 			printMenuHeader();
 			printf("%s :\n\n", choicesArray[*operationModePtr - 1]);
@@ -56,7 +56,7 @@ void writeStudentData(char* filename, struct Student* student) {
 	return;
 }
 
-//Reads student data from data file into passed array ptr
+//Reads student data from data file
 void readStudentData(char* filename, struct Student* studentPtr) {
 	FILE* fptr;
 
