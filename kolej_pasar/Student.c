@@ -40,8 +40,7 @@ void studentMode() {
 			} while (!checkIDValidity(tempId));
 
 			//Attempt to read student data from relevant file name.
-			//student initialized with INVALID name in case student data cannot be read
-			struct Student student = { .id = "INVALID" };
+			struct Student student;
 			readStudentData(strcat(tempId, ".bin"), &student);
 
 			//Exit switch with error message if student data file cannot be found.

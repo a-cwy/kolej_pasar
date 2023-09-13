@@ -30,9 +30,9 @@ void flushTerminal(void) {
 //----------struct Student UTILITY FUNCTIONS---------
 //Accepts input as char letterGrade[3] and returns corresponding grade point value.
 float getGradePoint(char *letterGrade) {
+	//map implementation to pair letterGrades with gradePoint values
 	char conversionArrayKeys[8][3] = {"A", "A-", "B+", "B", "B-", "C+", "C", "F"};
 	float conversionArrayValues[8] = {4.00f, 3.75f, 3.50f, 3.00f, 2.75f, 2.50f, 2.00f, 0.00f};
-
 
 	//iterate through conversionArrayKeys to find index of letterGrade by matching value
 	for (int i = 0; i < 8; i++) {
@@ -46,6 +46,7 @@ float getGradePoint(char *letterGrade) {
 
 //Calculates and updates qualityPoint for struct Student
 void calcQualityPoint(struct Student *studentPtr) {
+	//iterate through semesters and courses and calculate qualityPoint for each course
 	for (int semester = 0; semester < 3; semester++) {
 		for (int course = 0; course < 2; course++) {
 			int creditHour = studentPtr->semesters[semester].courses[course].creditHour;
@@ -60,6 +61,7 @@ void calcQualityPoint(struct Student *studentPtr) {
 
 //Calculates and updates GPA for struct Student
 void calcGPA(struct Student* studentPtr) {
+	//iterate through semesters and courses and calculate GPA for each semester
 	for (int semester = 0; semester < 3; semester++) {
 		int totalCreditHour = 0;
 		float totalQualityPoint = 0.0f;
@@ -67,10 +69,9 @@ void calcGPA(struct Student* studentPtr) {
 		for (int course = 0; course < 2; course++) {
 			totalCreditHour += studentPtr->semesters[semester].courses[course].creditHour;
 			totalQualityPoint += studentPtr->semesters[semester].courses[course].qualityPoint;
-			
 		}
 
-		studentPtr->semesters[semester].GPA = (float)totalQualityPoint / totalCreditHour ;
+		studentPtr->semesters[semester].GPA = (float)totalQualityPoint / totalCreditHour;
 	}
 
 	return;
@@ -78,18 +79,18 @@ void calcGPA(struct Student* studentPtr) {
 
 //Calculates and updates CPGA for struct Student
 void calcCGPA(struct Student* studentPtr) {
-		int totalCreditHour = 0;
-		float totalQualityPoint = 0.0f;
-	for (int semester = 0; semester < 3; semester++) {
+	int totalCreditHour = 0;
+	float totalQualityPoint = 0.0f;
 
+	//iterate through semesters and courses and calculate CGPA
+	for (int semester = 0; semester < 3; semester++) {
 		for (int course = 0; course < 2; course++) {
 			totalCreditHour += studentPtr->semesters[semester].courses[course].creditHour;
 			totalQualityPoint += studentPtr->semesters[semester].courses[course].qualityPoint;
-
 		}
-
 	}
-		studentPtr->CGPA = (float)totalQualityPoint / totalCreditHour;
+	
+	studentPtr->CGPA = (float)totalQualityPoint / totalCreditHour;
 
 	return;
 }
@@ -132,6 +133,7 @@ void displayStudentInformation(struct Student* studentPtr) {
 	printf("|Semester 1               |Semester 2               |Semester 3               |\n");
 	printf("|-------------------------|-------------------------|-------------------------|\n");
 
+	//loop through each semester and course to print details
 	for (int course = 0; course < 2; course++) {
 		printf("|");
 		for (int semester = 0; semester < 3; semester++) {
@@ -211,4 +213,3 @@ bool checkCourseCodeValidity(char* courseCodeString) {
 
 	return true;
 }
-

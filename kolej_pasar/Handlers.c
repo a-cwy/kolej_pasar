@@ -72,6 +72,7 @@ void readStudentData(char* filename, struct Student* studentPtr) {
 	return;
 }
 
+//Deletes student data file
 void deleteStudentData(char* filename) {
 	if (remove(filename)) {
 		printf("\n\nFailed to delete file.\n\n");
