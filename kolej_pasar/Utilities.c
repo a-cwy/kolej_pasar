@@ -135,6 +135,7 @@ void displayStudentInformation(struct Student* studentPtr) {
 
 	//loop through each semester and course to print details
 	for (int course = 0; course < 2; course++) {
+		//print courseCode
 		printf("|");
 		for (int semester = 0; semester < 3; semester++) {
 			printf("%-11s:   %-10s", "Course", studentPtr->semesters[semester].courses[course].courseCode);
@@ -142,6 +143,7 @@ void displayStudentInformation(struct Student* studentPtr) {
 		}
 		printf("\n");
 
+		//print letterGrade
 		printf("|");
 		for (int semester = 0; semester < 3; semester++) {
 			printf("%-11s:   %-10s", "Grade", studentPtr->semesters[semester].courses[course].letterGrade);
@@ -149,6 +151,7 @@ void displayStudentInformation(struct Student* studentPtr) {
 		}
 		printf("\n");
 
+		//print creditHour
 		printf("|");
 		for (int semester = 0; semester < 3; semester++) {
 			printf("%-11s:   %-10d", "Cr. Hours", studentPtr->semesters[semester].courses[course].creditHour);
@@ -158,6 +161,7 @@ void displayStudentInformation(struct Student* studentPtr) {
 		printf("|                         |                         |                         |\n");
 	}
 
+	//print semester GPA
 	printf("|");
 	for (int semester = 0; semester < 3; semester++) {
 		printf("%-11s:   %-10.2f", "GPA", studentPtr->semesters[semester].GPA);
